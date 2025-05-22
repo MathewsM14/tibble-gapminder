@@ -10,9 +10,11 @@ install.packages("ggplot2")
 
 
 library(tibble)
-library(dplyr)
-library(gapminder)
-library(ggplot2)
+library(dplyr)  # Para manipulación de datos con tablas tipo tibble
+library(gapminder) #dataset tipo tibble
+library(ggplot2)  # Para visualización de datos
+
+# ======================================================
 
 # 🟢 1. Crear un tibble desde cero
 mi_tibble <- tibble(
@@ -23,6 +25,14 @@ mi_tibble <- tibble(
 
 # Mostrar el tibble
 print(mi_tibble)
+
+# Acceder a una columna
+# Usando el nombre de la columna
+mi_tibble$Nombre[1]
+promedio <- mean(mi_tibble$Puntaje)
+print(promedio)
+mean(mi_tibble$Edad)
+max(mi_tibble$Edad)
 
 # Comparar con un data.frame clásico
 mi_dataframe <- data.frame(
@@ -68,6 +78,9 @@ resumen <- gapminder %>%
 
 print(resumen)
 
+gapminder_df <- as.data.frame(gapminder)
+gapminder_df
+rm(gapminder_df)
 # ========================
 # 4. Visualización con ggplot2
 # ========================
@@ -111,6 +124,26 @@ write.csv(gapminder, "gapminder.csv", row.names = FALSE)
 gapminder_leido <- read.csv("gapminder.csv")
 
 # 8. Verificar el tipo de datos en de gapminder_leido. Convertir a tibble
-# ...
-# Ingresa tu código aquí
-# ...
+
+class(gapminder_leido)
+gapminder_leido <- as_tibble(gapminder_leido)
+class(gapminder_leido)
+
+
+#Cuantos continentes considera gapminder  ---> 5 continentes
+gapminder %>%
+  group_by(continent) %>%
+  summarise(numero_cont = n_distinct(continent))
+
+gapminder %>%
+  summarise(numero_cont = n_distinct(continent))
+
+#Cuantos países hay en el dataset gapminder  ---> 142 países
+gapminder %>%
+  summarise(numero_pais = n_distinct(country))
+
+
+#Cuantos países considera gapminder por continente
+gapminder %>%
+  group_by(continent) %>%
+  summarise(paises = n_distinct(country))
